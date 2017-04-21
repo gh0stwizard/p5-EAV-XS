@@ -1,0 +1,83 @@
+NAME
+    EAV::XS - Email Address Validator
+
+SYNOPSIS
+        use EAV::XS;
+
+        my $eav = EAV::XS->new();
+
+        if ($eav->is_email ('valid@example.com')) {
+            print "This is a valid email address.\n";
+        } else {
+            printf "The email address is not valid: %s\n",
+                    $eav->error();
+        }
+
+DESCRIPTION
+    The purpose of this module is a validation of the specified Email
+    Address <https://en.wikipedia.org/wiki/Email_address>.
+
+    The core part of the module is written in C and can be found here
+    <https://github.com/gh0stwizard/libeav>.
+
+    At the moment this module conforms to RFC 6531
+    <https://tools.ietf.org/html/rfc6531> and RFC 20
+    <https://tools.ietf.org/html/rfc20>. This means that the module supports
+    Internationalized Email Addresses encoded in UTF-8, RFC 3629
+    <https://tools.ietf.org/html/rfc3629>.
+
+    The default behavior of the module also includes the check of:
+
+    *   Special and Reserved domains as mentioned in RFC 6761
+        <https://tools.ietf.org/html/rfc6761>
+
+    *   FQDN - if the domain contains only alias and it is not a special or
+        reserved domain, then the result is negative, that is, such an email
+        address is considered as invalid.
+
+DEPENDENCIES
+    This module depends on libidnkit <https://jprs.co.jp/idn/index-e.html>.
+    You have to install it before using this module.
+
+METHODS
+    *   $eav = new ()
+
+        Creates a new EAV::XS object, if something goes wrong a message will
+        be thrown via croak().
+
+    *   $yes_no = is_email ($email)
+
+        Validates the specified email. Returns true if the email is valid,
+        otherwise returns false.
+
+    *   $error_message = error ()
+
+        Returns an error message for the last email address tested by
+        is_email() method.
+
+SEE ALSO
+    References:
+
+    RFC 20 <https://tools.ietf.org/html/rfc20>
+    RFC 822 <https://tools.ietf.org/html/rfc822>
+    RFC 5321 <https://tools.ietf.org/html/rfc5321>
+    RFC 5322 <https://tools.ietf.org/html/rfc5322>
+    RFC 6530 <https://tools.ietf.org/html/rfc6530>
+    RFC 6531 <https://tools.ietf.org/html/rfc6531>
+
+    Other implementations:
+
+    Email::Valid
+    String::Validator::Email
+    Data::Validate::Email
+    Email::Address
+
+AUTHOR
+    Vitaliy V. Tokarev, <vitaliy.tokarev@gmail.com>
+
+COPYRIGHT AND LICENSE
+    Copyright (C) 2017 by Vitaliy V. Tokarev
+
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+

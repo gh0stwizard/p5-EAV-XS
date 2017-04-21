@@ -1,0 +1,13 @@
+~$
+MYMETA.*
+Makefile
+Makefile.aperl
+Makefile.old
+Pathname.c
+EAV-XS-*
+blib/
+*.o
+perl
+perl.core
+perlmain.c
+pm_to_blib

@@ -1,0 +1,7 @@
+invalid
+space invalid@valid.domain.com
+~#{}|`^@domain.org
+alias@domain
+bad@☕.de
+bad@I♥NY.de
+bad@日本⒈co．jp
