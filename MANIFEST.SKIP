@@ -5,6 +5,7 @@
 \B\.svn\b
 \B\.git\b
 .gitignore$
+.gitmodules$
 
 # Makemaker generated files and dirs.
 ^MANIFEST\.
