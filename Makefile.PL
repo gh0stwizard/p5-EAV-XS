@@ -1,7 +1,9 @@
 use strict;
 use ExtUtils::MakeMaker;
 
-# TODO (libeav/tests must accept new options)
+
+# TODO: libeav/tests/* must accept new options.
+#
 # Current possible options:
 # * RFC6531_PERMIT_EXTRA_CHARS - allow extra chars (RFC 20)
 # * RFC6531_FOLLOW_RFC5322 - white-space chars depricated in quotes
@@ -59,16 +61,6 @@ EOF
 }
 
 
-
-
-
-# In case if the user forgot about this detail;
-# allow flawless tests passing.
-if ($^O ne 'MSWin32') {
-    $ENV{ 'LD_LIBRARY_PATH' } = $idnkit_dir . "/lib";
-}
-
-
 WriteMakefile(
     dist              => {
         'PREOP'     => 'pod2text lib/EAV/XS.pm'
@@ -88,7 +80,7 @@ WriteMakefile(
     ABSTRACT          => 'The Email Address Validator',
     AUTHOR            => 'Vitaliy V. Tokarev <vitaliy.tokarev@gmail>',
     LICENSE           => 'freebsd',
-    LIBS              => [''],
+    LIBS              => [ "-L${idnkit_dir}/lib -lidnkit" ],
     DEFINE            => "$DEFINE",
     INC               => '-Ilibeav/include ' . "-I${idnkit_dir}/include",
     OBJECT            => '$(O_FILES)',
@@ -116,13 +108,16 @@ sub MY::subdir_x {
 sub MY::postamble {
     return <<'EOL';
 $(MYEXTLIB): libeav/Makefile
-	cd libeav || exit 1; $(MAKE) libeav.a CFLAGS=$(DEFINE) IDNKIT_DIR=$(PERL_IDNKIT_DIR)
+	cd libeav || exit 1; \
+	$(MAKE) libeav.a CFLAGS=$(DEFINE) IDNKIT_DIR=$(PERL_IDNKIT_DIR)
 
 clean-libeav:
-	cd libeav || exit 1; $(MAKE) clean
+	cd libeav || exit 1; \
+	$(MAKE) clean
 
 check-libeav:
-	cd libeav || exit 1; $(MAKE) check CFLAGS=$(DEFINE) IDNKIT_DIR=$(PERL_IDNKIT_DIR)
+	cd libeav || exit 1; \
+	$(MAKE) check CFLAGS=$(DEFINE) IDNKIT_DIR=$(PERL_IDNKIT_DIR)
 
 EOL
 }
