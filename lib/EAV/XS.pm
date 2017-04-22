@@ -101,33 +101,53 @@ by B<is_email()> method.
 
 References:
 
-=over
+=over 4
 
-=item L<RFC 20|https://tools.ietf.org/html/rfc20>
+=item *
 
-=item L<RFC 822|https://tools.ietf.org/html/rfc822>
+L<RFC 20|https://tools.ietf.org/html/rfc20>
 
-=item L<RFC 5321|https://tools.ietf.org/html/rfc5321>
+=item *
 
-=item L<RFC 5322|https://tools.ietf.org/html/rfc5322>
+L<RFC 822|https://tools.ietf.org/html/rfc822>
 
-=item L<RFC 6530|https://tools.ietf.org/html/rfc6530>
+=item *
 
-=item L<RFC 6531|https://tools.ietf.org/html/rfc6531>
+L<RFC 5321|https://tools.ietf.org/html/rfc5321>
+
+=item *
+
+L<RFC 5322|https://tools.ietf.org/html/rfc5322>
+
+=item *
+
+L<RFC 6530|https://tools.ietf.org/html/rfc6530>
+
+=item *
+
+L<RFC 6531|https://tools.ietf.org/html/rfc6531>
 
 =back
 
 Other implementations:
 
-=over
+=over 4
 
-=item L<Email::Valid>
+=item *
 
-=item L<String::Validator::Email>
+L<Email::Valid>
 
-=item L<Data::Validate::Email>
+=item *
 
-=item L<Email::Address>
+L<String::Validator::Email>
+
+=item *
+
+L<Data::Validate::Email>
+
+=item *
+
+L<Email::Address>
 
 =back
 
