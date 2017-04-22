@@ -12,3 +12,5 @@ perl.core
 perlmain.c
 pm_to_blib
 *.c
+*.bs
+MANIFEST.bak
