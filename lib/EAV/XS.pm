@@ -1,16 +1,3 @@
-package EAV::XS;
-
-use strict;
-use warnings;
-
-our $VERSION = eval '0.1.2';
-
-require XSLoader;
-XSLoader::load('EAV::XS', $VERSION);
-
-1;
-__END__
-
 =pod
 
 =encoding utf-8
@@ -64,6 +51,61 @@ that is, such an email address is considered as invalid.
 
 =back
 
+=cut
+
+package EAV::XS;
+
+use strict;
+use warnings;
+
+require Exporter;
+
+our @ISA = qw(Exporter);
+
+our %EXPORT_TAGS = ( 'all' => [ qw(
+    RFC822
+    RFC5321
+    RFC5322
+    RFC6531
+    TLD_INVALID
+    TLD_NOT_ASSIGNED
+    TLD_COUNTRY_CODE
+    TLD_GENERIC
+    TLD_GENERIC_RESTRICTED
+    TLD_INFRASTRUCTURE
+    TLD_SPONSORED
+    TLD_TEST
+    TLD_SPECIAL
+) ] );
+
+our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+our @EXPORT = ();
+
+our $VERSION = '0.2.0';
+
+require XSLoader;
+XSLoader::load('EAV::XS', $VERSION);
+
+# RFC specification
+use constant RFC822     => 0x00000000;
+use constant RFC5321    => 0x00000001;
+use constant RFC5322    => 0x00000002;
+use constant RFC6531    => 0x00000003;
+
+# allow_tld: this types of TLDs considered as OK
+use constant TLD_INVALID            => 0x00000002;
+use constant TLD_NOT_ASSIGNED       => 0x00000004;
+use constant TLD_COUNTRY_CODE       => 0x00000008;
+use constant TLD_GENERIC            => 0x00000010;
+use constant TLD_GENERIC_RESTRICTED => 0x00000020;
+use constant TLD_INFRASTRUCTURE     => 0x00000040;
+use constant TLD_SPONSORED          => 0x00000080;
+use constant TLD_TEST               => 0x00000100;
+use constant TLD_SPECIAL            => 0x00000200;
+
+1;
+__END__
+
 =head1 DEPENDENCIES
 
 This module depends on L<libidnkit|https://jprs.co.jp/idn/index-e.html>.
@@ -75,26 +117,116 @@ You have to install it before using this module.
 
 =item *
 
-$eav = B<new ()>
+$eav = B<new> ( [%options] )
 
 Creates a new EAV::XS object, if something goes wrong a message will
 be thrown via croak().
 
+Possible options includes:
+
+=over 4
+
 =item *
 
-$yes_no = B<is_email ($email)>
+B<rfc> - use this RFC specification. Possible values are: I<RFC822>, 
+I<RFC5321>, I<RFC5322> or I<RFC6531>. Default is I<RFC6531>.
+
+=item *
+
+B<tld_check> - enable or disable TLD check. Enabled by default.
+
+=item *
+
+B<allow_tld> - list of TLD types which considered be good. You have to
+specify this list via logical OR ("|"). Information about possible
+values described below in section L</"TLD INFORMATION">.
+
+Default value is: I<TLD_COUNTRY_CODE> | I<TLD_GENERIC> | 
+I<TLD_GENERIC_RESTRICTED> |
+I<TLD_INFRASTRUCTURE> |
+I<TLD_SPONSORED> |
+I<TLD_SPECIAL>.
+
+=back
+
+=item *
+
+$yes_no = B<is_email> ( $email )
 
 Validates the specified email. Returns true if the email
 is valid, otherwise returns false.
 
 =item *
 
-$error_message = B<error ()>
+$error_message = B<error> ()
 
 Returns an error message for the last email address tested
 by B<is_email()> method.
 
 =back
+
+=head2 TLD INFORMATION
+
+The current list of all TLDs can be found on
+L<IANA Root Zone Database|https://www.iana.org/domains/root/db> website.
+
+The B<allow_tld> option accepts the next values:
+
+=over 4
+
+=item *
+
+TLD_NOT_ASSIGNED - allow not assigned TLDs. On IANA website they are listed
+as "Not assigned" in the "Sponsoring Organisation" field.
+
+=item *
+
+TLD_COUNTRY_CODE - allow county-code TLDs.
+
+=item *
+
+TLD_GENERIC - allow generic TLDs.
+
+=item *
+
+TLD_GENERIC_RESTRICTED - allow generic-restricted TLDs.
+
+=item *
+
+TLD_INFRASTRUCTURE - allow infrastructure TLDs.
+
+=item *
+
+TLD_SPONSORED - allow sponsored TLDs.
+
+=item *
+
+TLD_TEST - allow test TLDs.
+
+=item *
+
+TLD_SPECIAL - allow Special & Restricted TLDs.
+See L<RFC 2606|https://tools.ietf.org/html/rfc2606> and
+L<RFC 6761|https://tools.ietf.org/html/rfc6761> for details.
+
+Currently, this includes the next TLDs: "test.", "invalid.", 
+"localhost.", "example." and also Second Level Domains, such as,
+"example.com.", "example.net." and "example.org.".
+
+=back
+
+
+For instance, to allow only country-code and generic TLDs you
+have to write this:
+
+    my $eav = EAX::XS->new(
+        allow_tld => EAV::XS::TLD_COUNTRY_CODE | EAV::XS::TLD_GENERIC
+    );
+
+    if (not $eav->is_email ('test@example.biz')) {
+        print ".biz is generic-restriced TLD and not allowed.\n";
+    }
+
 
 =head1 SEE ALSO
 
