@@ -80,6 +80,8 @@ SEE ALSO
 
     *   Email::Address
 
+    *   Email::IsEmail
+
 AUTHOR
     Vitaliy V. Tokarev, <vitaliy.tokarev@gmail.com>
 
