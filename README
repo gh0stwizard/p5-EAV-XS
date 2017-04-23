@@ -40,12 +40,27 @@ DEPENDENCIES
     You have to install it before using this module.
 
 METHODS
-    *   $eav = new ()
+    *   $eav = new ( [%options] )
 
         Creates a new EAV::XS object, if something goes wrong a message will
         be thrown via croak().
 
-    *   $yes_no = is_email ($email)
+        Possible options includes:
+
+        *   rfc - use this RFC specification. Possible values are: *RFC822*,
+            *RFC5321*, *RFC5322* or *RFC6531*. Default is *RFC6531*.
+
+        *   tld_check - enable or disable TLD check. Enabled by default.
+
+        *   allow_tld - list of TLD types which considered be good. You have
+            to specify this list via logical OR ("|"). Information about
+            possible values described below in section "TLD INFORMATION".
+
+            Default value is: *TLD_COUNTRY_CODE* | *TLD_GENERIC* |
+            *TLD_GENERIC_RESTRICTED* | *TLD_INFRASTRUCTURE* |
+            *TLD_SPONSORED* | *TLD_SPECIAL*.
+
+    *   $yes_no = is_email ( $email )
 
         Validates the specified email. Returns true if the email is valid,
         otherwise returns false.
@@ -54,6 +69,46 @@ METHODS
 
         Returns an error message for the last email address tested by
         is_email() method.
+
+  TLD INFORMATION
+    The current list of all TLDs can be found on IANA Root Zone Database
+    <https://www.iana.org/domains/root/db> website.
+
+    The allow_tld option accepts the next values:
+
+    *   TLD_NOT_ASSIGNED - allow not assigned TLDs. On IANA website they are
+        listed as "Not assigned" in the "Sponsoring Organisation" field.
+
+    *   TLD_COUNTRY_CODE - allow county-code TLDs.
+
+    *   TLD_GENERIC - allow generic TLDs.
+
+    *   TLD_GENERIC_RESTRICTED - allow generic-restricted TLDs.
+
+    *   TLD_INFRASTRUCTURE - allow infrastructure TLDs.
+
+    *   TLD_SPONSORED - allow sponsored TLDs.
+
+    *   TLD_TEST - allow test TLDs.
+
+    *   TLD_SPECIAL - allow Special & Restricted TLDs. See RFC 2606
+        <https://tools.ietf.org/html/rfc2606> and RFC 6761
+        <https://tools.ietf.org/html/rfc6761> for details.
+
+        Currently, this includes the next TLDs: "test.", "invalid.",
+        "localhost.", "example." and also Second Level Domains, such as,
+        "example.com.", "example.net." and "example.org.".
+
+    For instance, to allow only country-code and generic TLDs you have to
+    write this:
+
+        my $eav = EAX::XS->new(
+            allow_tld => EAV::XS::TLD_COUNTRY_CODE | EAV::XS::TLD_GENERIC
+        );
+
+        if (not $eav->is_email ('test@example.biz')) {
+            print ".biz is generic-restriced TLD and not allowed.\n";
+        }
 
 SEE ALSO
     References:
