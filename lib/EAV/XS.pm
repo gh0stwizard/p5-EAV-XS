@@ -44,7 +44,7 @@ L<RFC 5321|https://tools.ietf.org/html/rfc5321>
 =item *
 
 L<RFC 5322|https://tools.ietf.org/html/rfc5322>
-- allow some control characters and not allows SPACE and TAB
+- allows some control characters and not allows SPACE and TAB
 characters without quoted-pairs.
 
 =item *
@@ -252,7 +252,7 @@ have to write this:
     );
 
     if (not $eav->is_email ('test@example.biz')) {
-        print ".biz is generic-restriced TLD and not allowed.\n";
+        print ".biz is generic-restricted TLD and not allowed.\n";
     }
 
 
