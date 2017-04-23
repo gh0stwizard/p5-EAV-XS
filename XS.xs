@@ -19,14 +19,19 @@ PROTOTYPES: ENABLE
 
 EAV::XS
 new(package)
-        const char *package
+        const char  *package
     PREINIT:
-        eav_t *eav;
+        eav_t *eav = NULL;
         int r = EEAV_NO_ERROR;
     CODE:
-	eav = (eav_t *) safemalloc(sizeof(eav_t));
+        eav = (eav_t *) safemalloc(sizeof(eav_t));
+
+        if (eav == NULL)
+            croak ("safemalloc(): out of memory");
+
         eav_init (eav);
         r = eav_setup (eav);
+
         if (r == EEAV_NO_ERROR)
             RETVAL = eav;
         else
@@ -37,10 +42,10 @@ new(package)
 
 void
 DESTROY(self)
-        EAV::XS self
+        EAV::XS     self
     CODE:
         eav_free (self);
-	safefree (self);
+        safefree (self);
 
 
 int
@@ -65,10 +70,10 @@ error(self)
         const char *msg;
     CODE:
         msg = eav_errstr(self);
+
         if (msg != NULL)
             RETVAL = newSVpv(msg, 0);
         else
-            RETVAL = &PL_sv_undef;
+            RETVAL = newSVpv("", 0);
     OUTPUT:
         RETVAL
-
