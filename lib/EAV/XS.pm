@@ -27,11 +27,38 @@ L<Email Address|https://en.wikipedia.org/wiki/Email_address>.
 The core part of the module is written in C and can be
 found L<here|https://github.com/gh0stwizard/libeav>.
 
-At the moment this module conforms to
+The module conforms to:
+
+=over 4
+
+=item *
+
+L<RFC 822|https://tools.ietf.org/html/rfc822>
+- allows control characters.
+
+=item *
+
+L<RFC 5321|https://tools.ietf.org/html/rfc5321>
+- does not allow any control characters.
+
+=item *
+
+L<RFC 5322|https://tools.ietf.org/html/rfc5322>
+- allow some control characters and not allows SPACE and TAB
+characters without quoted-pairs.
+
+=item *
+
 L<RFC 6531|https://tools.ietf.org/html/rfc6531> and
 L<RFC 20|https://tools.ietf.org/html/rfc20>.
-This means that the module supports Internationalized Email Addresses
-encoded in UTF-8, L<RFC 3629|https://tools.ietf.org/html/rfc3629>.
+Allows Internationalized Email Addresses encoded 
+in UTF-8, L<RFC 3629|https://tools.ietf.org/html/rfc3629>.
+
+Currently, this mode based on RFC 5321 and disallow next characters,
+as described in RFC 20: C<`>, C<#>, C<^>, C<{>, C<}>, C<~> and C<|>.
+They must be in double-quotes.
+
+=back
 
 The default behavior of the module also includes
 the check of:
@@ -81,7 +108,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = ();
 
-our $VERSION = '0.2.0';
+our $VERSION = eval '0.2.0';
 
 require XSLoader;
 XSLoader::load('EAV::XS', $VERSION);
@@ -133,7 +160,8 @@ I<RFC5321>, I<RFC5322> or I<RFC6531>. Default is I<RFC6531>.
 
 =item *
 
-B<tld_check> - enable or disable TLD check. Enabled by default.
+B<tld_check> - enable or disable TLD check. Also, this controls FQDN check.
+Enabled by default.
 
 =item *
 

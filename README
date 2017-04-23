@@ -20,11 +20,26 @@ DESCRIPTION
     The core part of the module is written in C and can be found here
     <https://github.com/gh0stwizard/libeav>.
 
-    At the moment this module conforms to RFC 6531
-    <https://tools.ietf.org/html/rfc6531> and RFC 20
-    <https://tools.ietf.org/html/rfc20>. This means that the module supports
-    Internationalized Email Addresses encoded in UTF-8, RFC 3629
-    <https://tools.ietf.org/html/rfc3629>.
+    The module conforms to:
+
+    *   RFC 822 <https://tools.ietf.org/html/rfc822> - allows control
+        characters.
+
+    *   RFC 5321 <https://tools.ietf.org/html/rfc5321> - does not allow any
+        control characters.
+
+    *   RFC 5322 <https://tools.ietf.org/html/rfc5322> - allow some control
+        characters and not allows SPACE and TAB characters without
+        quoted-pairs.
+
+    *   RFC 6531 <https://tools.ietf.org/html/rfc6531> and RFC 20
+        <https://tools.ietf.org/html/rfc20>. Allows Internationalized Email
+        Addresses encoded in UTF-8, RFC 3629
+        <https://tools.ietf.org/html/rfc3629>.
+
+        Currently, this mode based on RFC 5321 and disallow next characters,
+        as described in RFC 20: "`", "#", "^", "{", "}", "~" and "|". They
+        must be in double-quotes.
 
     The default behavior of the module also includes the check of:
 
@@ -50,7 +65,8 @@ METHODS
         *   rfc - use this RFC specification. Possible values are: *RFC822*,
             *RFC5321*, *RFC5322* or *RFC6531*. Default is *RFC6531*.
 
-        *   tld_check - enable or disable TLD check. Enabled by default.
+        *   tld_check - enable or disable TLD check. Also, this controls
+            FQDN check. Enabled by default.
 
         *   allow_tld - list of TLD types which considered be good. You have
             to specify this list via logical OR ("|"). Information about
