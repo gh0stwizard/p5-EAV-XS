@@ -38,7 +38,6 @@ libeav/src/is_ipv4_ipv6.c
 libeav/src/is_special_domain.c
 libeav/src/is_tld.c
 libeav/src/is_utf8_domain.c
-libeav/src/is_utf8_inet_domain.c
 libeav/src/private.h
 libeav/src/private_email.h
 libeav/src/utf8_decode.c
@@ -50,6 +49,8 @@ libeav/tests/t-5321-localpart.c
 libeav/tests/t-5322-email.c
 libeav/tests/t-5322-localpart.c
 libeav/tests/t-6531-email-fqdn.c
+libeav/tests/t-6531-email-tld-special.c
+libeav/tests/t-6531-email-tld.c
 libeav/tests/t-6531-email.c
 libeav/tests/t-6531-localpart.c
 libeav/tests/t-822-email.c

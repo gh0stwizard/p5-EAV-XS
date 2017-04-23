@@ -29,3 +29,7 @@
 # `make distdir'
 ^EAV-XS-
 
+# local
+\.o
+\.bs
+XS\.c
