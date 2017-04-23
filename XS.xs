@@ -11,7 +11,6 @@ typedef eav_t *EAV__XS;
 typedef enum {
     EAV_PARAM_UNKNOWN,
     EAV_PARAM_TLD_CHECK,
-    EAV_PARAM_UTF8,
     EAV_PARAM_RFC,
     EAV_PARAM_ALLOW_TLD
 } eav_param_t;
@@ -26,10 +25,6 @@ eav_param (const char *s, const STRLEN len)
     case 3:
         if (memEQ(s, "rfc", 3))
             return EAV_PARAM_RFC;
-        break;
-    case 4:
-        if (memEQ(s, "utf8", 4))
-            return EAV_PARAM_UTF8;
         break;
     case 9:
         if (memEQ(s, "tld_check", 9))
@@ -69,8 +64,6 @@ new(package, ...)
         eav_t *eav = NULL;
         int r = EEAV_NO_ERROR;
         I32 i;
-        const char *key;
-        STRLEN len;
     CODE:
         if (((items - 1) % 2) != 0)
             croak ("options have the odd number of elements");
@@ -89,9 +82,6 @@ new(package, ...)
                 break;
             case EAV_PARAM_TLD_CHECK:
                 eav->tld_check = (SvIV(ST(i+1))) ? true : false;
-                break;
-            case EAV_PARAM_UTF8:
-                eav->utf8 = (SvIV(ST(i+1))) ? true : false;
                 break;
             case EAV_PARAM_RFC:
                 eav->rfc = SvIV(ST(i+1));
