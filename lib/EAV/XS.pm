@@ -3,7 +3,7 @@ package EAV::XS;
 use strict;
 use warnings;
 
-our $VERSION = eval '0.1.1';
+our $VERSION = eval '0.1.2';
 
 require XSLoader;
 XSLoader::load('EAV::XS', $VERSION);
@@ -96,7 +96,6 @@ by B<is_email()> method.
 
 =back
 
-
 =head1 SEE ALSO
 
 References:
@@ -148,6 +147,10 @@ L<Data::Validate::Email>
 =item *
 
 L<Email::Address>
+
+=item *
+
+L<Email::IsEmail>
 
 =back
 
