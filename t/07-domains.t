@@ -15,9 +15,17 @@ my @email_pass = (
     'ok@ею.ею',
     'ok@қаз.қаз',
     'ok@קום.קום',
+    'ok@localhost',
+    'ok@test',
+    'ok@example',
+    'ok@example.com',
+    'ok@example.net',
+    'ok@example.org',
 );
 
 my @email_fail = (
+    # unknown tld
+    'unknown@example.x',
     # test
     'test@测试.测试',
     'test@परीक्षा.परीक्षा',

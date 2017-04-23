@@ -13,22 +13,30 @@ my @email_pass = (
     'иван@иванов.рф',
     'иван@localhost',
     'борис.борисович+tag@test.com',
-    'user@نامهای.نامهای',
+    'user@ارامكو.ارامكو',
     'r2l@عربي.de',
     '微博@微博.微博',
     # valid domain
     'الجزائر@الجزائر.الجزائر',
-    'test@hello.vermögensberater',
+    'ok@hello.vermögensberater',
+    'ok@クラウド.クラウド',
+    'ok@日本｡co｡jp',
 );
 
 my @email_fail = (
     'иван@бездомена',
-    'без-tld@xn--p1ai',
+    'no-tld@xn--p1ai',
     '@ελ.ελ',
     '时尚@微博',
     # :) test domain
     'إختبار@إختبار.إختبار',
     'long-domain@ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション',
+    'test-tld@إختبار.إختبار',
+    'test-tld@آزمایشی.آزمایشی',
+    'not-assinged@भारतम्.भारतम्',
+    '{rfc20}@test',
+    '#rfc20#@test',
+    '^rfc20^@test',
 );
 
 for my $email (@email_pass) {
