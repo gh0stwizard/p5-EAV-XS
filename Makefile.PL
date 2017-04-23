@@ -78,7 +78,7 @@ WriteMakefile(
         'Test::More'    => 0,
     },
     ABSTRACT          => 'The Email Address Validator',
-    AUTHOR            => 'Vitaliy V. Tokarev <vitaliy.tokarev@gmail>',
+    AUTHOR            => 'Vitaliy V. Tokarev <vitaliy.tokarev@gmail.com>',
     LICENSE           => 'freebsd',
     LIBS              => [ "-L${idnkit_dir}/lib -lidnkit" ],
     DEFINE            => "$DEFINE",
