@@ -108,12 +108,13 @@ METHODS
     *   TLD_TEST - allow test TLDs.
 
     *   TLD_SPECIAL - allow Special & Restricted TLDs. See RFC 2606
-        <https://tools.ietf.org/html/rfc2606> and RFC 6761
-        <https://tools.ietf.org/html/rfc6761> for details.
+        <https://tools.ietf.org/html/rfc2606>, RFC 6761
+        <https://tools.ietf.org/html/rfc6761> and RFC 7686
+        <https://tools.ietf.org/html/rfc7686> for details.
 
         Currently, this includes the next TLDs: "test.", "invalid.",
-        "localhost.", "example." and also Second Level Domains, such as,
-        "example.com.", "example.net." and "example.org.".
+        "localhost.", "example.", "onion." and also Second Level Domains,
+        such as, "example.com.", "example.net." and "example.org.".
 
     For instance, to allow only country-code and generic TLDs you have to
     write this:
