@@ -21,6 +21,8 @@ my @email_pass = (
     'ok@example.com',
     'ok@example.net',
     'ok@example.org',
+    'ok@secure.onion',
+    'ok@onion',
 );
 
 my @email_fail = (

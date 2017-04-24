@@ -108,7 +108,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = ();
 
-our $VERSION = eval '0.2.0';
+our $VERSION = eval '0.2.1';
 
 require XSLoader;
 XSLoader::load('EAV::XS', $VERSION);
@@ -234,12 +234,13 @@ TLD_TEST - allow test TLDs.
 =item *
 
 TLD_SPECIAL - allow Special & Restricted TLDs.
-See L<RFC 2606|https://tools.ietf.org/html/rfc2606> and
-L<RFC 6761|https://tools.ietf.org/html/rfc6761> for details.
+See L<RFC 2606|https://tools.ietf.org/html/rfc2606>,
+L<RFC 6761|https://tools.ietf.org/html/rfc6761> and
+L<RFC 7686|https://tools.ietf.org/html/rfc7686> for details.
 
 Currently, this includes the next TLDs: "test.", "invalid.", 
-"localhost.", "example." and also Second Level Domains, such as,
-"example.com.", "example.net." and "example.org.".
+"localhost.", "example.", "onion." and also Second Level Domains,
+such as, "example.com.", "example.net." and "example.org.".
 
 =back
 
