@@ -1,5 +1,9 @@
 Revision history for Perl extension EAV::XS.
 
+0.2.1  Mon Apr 24 16:59:57 UTC 2017
+	- added support for RFC 7686 ("onion." domain)
+	- added support for rest RFCs: 822, 5321, 5322
+
 0.1.2  Sun Apr 23 02:37:54 UTC 2017
 	- update tests
 	- update libeav with improved error handling
