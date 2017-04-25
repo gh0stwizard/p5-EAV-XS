@@ -1,5 +1,8 @@
 Revision history for Perl extension EAV::XS.
 
+0.2.2  Tue Apr 25 10:11:18 UTC 2017
+	- rename error() method to get_error()
+
 0.2.1  Mon Apr 24 16:59:57 UTC 2017
 	- added support for RFC 7686 ("onion." domain)
 	- added support for rest RFCs: 822, 5321, 5322

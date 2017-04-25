@@ -123,7 +123,7 @@ is_email(self, email)
 
 
 SV *
-error(self)
+get_error(self)
         EAV::XS     self
     PREINIT:
         const char *msg;

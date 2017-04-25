@@ -10,7 +10,7 @@ SYNOPSIS
             print "This is a valid email address.\n";
         } else {
             printf "The email address is not valid: %s\n",
-                    $eav->error();
+                    $eav->get_error();
         }
 
 DESCRIPTION
@@ -81,7 +81,7 @@ METHODS
         Validates the specified email. Returns true if the email is valid,
         otherwise returns false.
 
-    *   $error_message = error ()
+    *   $error_message = get_error ()
 
         Returns an error message for the last email address tested by
         is_email() method.

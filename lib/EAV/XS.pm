@@ -16,7 +16,7 @@ EAV::XS - Email Address Validator
         print "This is a valid email address.\n";
     } else {
         printf "The email address is not valid: %s\n",
-                $eav->error();
+                $eav->get_error();
     }
 
 =head1 DESCRIPTION
@@ -108,7 +108,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = ();
 
-our $VERSION = eval '0.2.1';
+our $VERSION = eval '0.2.2';
 
 require XSLoader;
 XSLoader::load('EAV::XS', $VERSION);
@@ -186,7 +186,7 @@ is valid, otherwise returns false.
 
 =item *
 
-$error_message = B<error> ()
+$error_message = B<get_error> ()
 
 Returns an error message for the last email address tested
 by B<is_email()> method.
