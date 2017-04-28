@@ -16,7 +16,9 @@ libeav/data/localpart-utf8.txt
 libeav/data/tld-domains.txt
 libeav/data/tld.csv
 libeav/data/xn-dash-domains.txt
-libeav/docs/.keep
+libeav/docs/libeav.3.gz
+libeav/docs/libeav.3.pod
+libeav/docs/Makefile
 libeav/include/eav.h
 libeav/LICENSE
 libeav/LICENSE.postfix
@@ -58,6 +60,7 @@ libeav/tests/t-822-localpart.c
 libeav/tests/t-all-tlds-test.c
 libeav/tests/t-dash-domains.c
 libeav/tests/t-domain-length.c
+libeav/tests/t-eav-all-modes.c
 libeav/tests/t-eav.c
 libeav/TODO
 libeav/util/gen_utf8_pass_test.pl
@@ -77,6 +80,12 @@ t/06-utf8.t
 t/07-domains.t
 t/08-file.t
 t/09-pod.t
+t/10-rfc822.t
+t/11-rfc5321.t
+t/11-rfc5322.t
+t/13-not-tld.t
+t/14-error.t
+t/15-tld.t
 t/check-fail.txt
 t/check-pass.txt
 typemap
