@@ -4,8 +4,9 @@
 ,v$
 \B\.svn\b
 \B\.git\b
-.gitignore$
-.gitmodules$
+\.gitignore$
+\.gitmodules$
+^README\.git$
 
 # Makemaker generated files and dirs.
 ^MANIFEST\.
