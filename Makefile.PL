@@ -108,16 +108,13 @@ sub MY::subdir_x {
 sub MY::postamble {
     return <<'EOL';
 $(MYEXTLIB): libeav/Makefile
-	cd libeav || exit 1; \
-	$(MAKE) libeav.a CFLAGS=$(DEFINE) IDNKIT_DIR=$(PERL_IDNKIT_DIR)
+	$(MAKE) -C libeav libeav.a CFLAGS=$(DEFINE) IDNKIT_DIR=$(PERL_IDNKIT_DIR)
 
 clean-libeav:
-	cd libeav || exit 1; \
-	$(MAKE) clean
+	$(MAKE) -C libeav clean
 
 check-libeav:
-	cd libeav || exit 1; \
-	$(MAKE) check CFLAGS=$(DEFINE) IDNKIT_DIR=$(PERL_IDNKIT_DIR)
+	$(MAKE) -C libeav check CFLAGS=$(DEFINE) IDNKIT_DIR=$(PERL_IDNKIT_DIR)
 
 EOL
 }
