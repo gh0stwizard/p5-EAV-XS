@@ -7,7 +7,7 @@ use open qw(:std :utf8);
 my $testnum = 0;
 
 my $eav = EAV::XS->new();
-ok (defined $eav);
+ok (defined $eav, "new EAV::XS");
 
 my @email_pass = (
     'иван@иванов.рф',
@@ -21,6 +21,11 @@ my @email_pass = (
     'ok@hello.vermögensberater',
     'ok@クラウド.クラウド',
     'ok@日本｡co｡jp',
+    # RFC 20 checks disabled by default
+    '{rfc20}@test',
+    '#rfc20#@test',
+    '^rfc20^@test',
+    'country-code@भारतम्.भारतम्',
 );
 
 my @email_fail = (
@@ -33,10 +38,7 @@ my @email_fail = (
     'long-domain@ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション.ファッション',
     'test-tld@إختبار.إختبار',
     'test-tld@آزمایشی.آزمایشی',
-    'not-assinged@भारतम्.भारतम्',
-    '{rfc20}@test',
-    '#rfc20#@test',
-    '^rfc20^@test',
+    'not-assinged@موبايلي.موبايلي',
 );
 
 for my $email (@email_pass) {

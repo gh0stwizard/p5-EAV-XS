@@ -21,6 +21,10 @@ my @email_pass = (
     'example-indeed@strange-example.com',
     '" "@example.org',
     'example@s.solutions',
+    # at the moment, by default libeav NOT conforms to RFC20:
+    # characters like '#', '~', '{', '}', '|' should not be used
+    # in international exchanges.
+    '#!$%&\'*+-/=?^_`{}|~@example.org',
 );
 
 my @email_fail = (
@@ -37,11 +41,6 @@ my @email_fail = (
     'numeric@1234',
     'all-numeric@123.456',
     'admin@no-tld',
-    # at the moment, by default libeav conforms to RFC20 & RFC6321:
-    # characters like '#', '~', '{', '}', '|' should not be used
-    # in international exchanges.
-    # (may be it will be changed in future)
-    '#!$%&\'*+-/=?^_`{}|~@example.org', 
     'no-fqdn@com',
 );
 

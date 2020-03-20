@@ -23,6 +23,15 @@ my @email_pass = (
     'ok@example.org',
     'ok@secure.onion',
     'ok@onion',
+    'cc@test.ss',
+    'cc@ಭಾರತ.ಭಾರತ',
+    'cc@ଭାରତ.ଭାରତ',
+    'cc@ভাৰত.ভাৰত',
+    'cc@भारोत.भारोत',
+    'cc@भारतम्.भारतम्',
+    'cc@بارت.بارت',
+    'cc@ڀارت.ڀارت',
+    'cc@ഭാരതം.ഭാരതം',
 );
 
 my @email_fail = (
@@ -45,16 +54,7 @@ my @email_fail = (
     'na@test.bq',
     'na@test.eh',
     'na@test.mf',
-    'na@test.ss',
     'na@test.um',
-    'na@ಭಾರತ.ಭಾರತ',
-    'na@ଭାରତ.ଭାରତ',
-    'na@ভাৰত.ভাৰত',
-    'na@भारतम्.भारतम्',
-    'na@भारोत.भारोत',
-    'na@بارت.بارت',
-    'na@ڀارت.ڀارت',
-    'na@ഭാരതം.ഭാരതം',
 );
 
 for my $email (@email_pass) {

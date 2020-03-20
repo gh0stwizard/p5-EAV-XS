@@ -15,3 +15,4 @@ valid@نامهای.de
 valid-mapping@日本｡co｡jp
 valid-mapping@日本｡co．jp
 lowercase@Σόλος.gr
+~#{}|`^@domain.org
