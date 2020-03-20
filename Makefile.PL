@@ -14,33 +14,35 @@ my $MYLIBS = "";
 my $idnkit_dir = $ENV{ 'IDNKIT_DIR' } ? $ENV{ 'IDNKIT_DIR' } : '/usr/local';
 
 
-my $with_idn = prompt "Select IDN library to build with (auto/idn/idn2/idnkit)",
-                      "auto";
+if (prompt ("Use default options (y/n)?", "y") =~ /^n/i) {
+	my $with_idn = prompt "Select IDN library to build with (auto/idn/idn2/idnkit)",
+		                  "auto";
 
-&set_rfc_options();
+	&set_rfc_options();
 
-if ($with_idn =~ /auto/i) {
-    push @OPTIONS, "FORCE_IDN=";
-}
-elsif ($with_idn =~ /^idn1?$/i) {
-    push @OPTIONS, "FORCE_IDN=idn";
-}
-elsif ($with_idn =~ /^idn2$/i) {
-    push @OPTIONS, "FORCE_IDN=idn2";
-}
-elsif ($with_idn =~ /^idnkit$/i) {
-    push @OPTIONS, "FORCE_IDN=idnkit";
-    &build_with_idnkit();
-    $MYLIBS = "-L${idnkit_dir}/lib -lidnkit";    
-}
-else {
-    print <<'EOF';
+	if ($with_idn =~ /auto/i) {
+		push @OPTIONS, "FORCE_IDN=";
+	}
+	elsif ($with_idn =~ /^idn1?$/i) {
+		push @OPTIONS, "FORCE_IDN=idn";
+	}
+	elsif ($with_idn =~ /^idn2$/i) {
+		push @OPTIONS, "FORCE_IDN=idn2";
+	}
+	elsif ($with_idn =~ /^idnkit$/i) {
+		push @OPTIONS, "FORCE_IDN=idnkit";
+		&build_with_idnkit();
+		$MYLIBS = "-L${idnkit_dir}/lib -lidnkit";
+	}
+	else {
+		print <<'EOF';
 
  *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
 
 ERROR: Invalid IDN library.
 
 EOF
+	}
 }
 
 
@@ -60,7 +62,7 @@ WriteMakefile(
     TEST_REQUIRES     => {
         'Test::More' => 0,
     },
-    ABSTRACT          => 'The Email Address Validator',
+    ABSTRACT          => 'Email Address Validation Library',
     AUTHOR            => 'Vitaliy V. Tokarev <vitaliy.tokarev@gmail.com>',
     LICENSE           => 'freebsd',
     LIBS              => [ $MYLIBS ],
