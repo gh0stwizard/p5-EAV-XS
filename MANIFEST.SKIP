@@ -4,6 +4,7 @@
 ,v$
 \B\.svn\b
 \B\.git\b
+\B\.github\b
 \.gitignore$
 \.gitmodules$
 ^README\.git$
@@ -34,3 +35,5 @@
 \.o
 \.bs
 XS\.c
+
+libeav/\.deps
