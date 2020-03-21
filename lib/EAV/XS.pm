@@ -25,7 +25,7 @@ The purpose of this module is a validation of the specified
 L<Email Address|https://en.wikipedia.org/wiki/Email_address>.
 
 The core part of the module is written in C and can be
-found L<here|https://github.com/gh0stwizard/libeav>.
+found in the B<libeav> directory.
 
 The module conforms to:
 
@@ -82,6 +82,13 @@ FQDN - if the domain contains only alias and it is not
 a special or reserved domain, then the result is negative,
 that is, such an email address is considered as invalid.
 
+=item *
+
+TLD - the module checks that domain is a Top Level Domain (TLD).
+The list of TLDs has been taken from IANA's
+L<Root Zone Database|https://www.iana.org/domains/root/db>.
+See the L</"TLD INFORMATION"> section below for details.
+
 =back
 
 =cut
@@ -114,7 +121,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = ();
 
-our $VERSION = "0.3.0";
+our $VERSION = "0.3.1";
 
 require XSLoader;
 XSLoader::load('EAV::XS', $VERSION);
@@ -229,7 +236,7 @@ The B<allow_tld> option accepts the next values:
 =item *
 
 TLD_NOT_ASSIGNED - allow not assigned TLDs. On IANA website they are listed
-as "Not assigned" in the "Sponsoring Organisation" field.
+as "Not assigned" in the "TLD Manager" field.
 
 =item *
 

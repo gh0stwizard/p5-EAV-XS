@@ -17,8 +17,8 @@ DESCRIPTION
     The purpose of this module is a validation of the specified Email
     Address <https://en.wikipedia.org/wiki/Email_address>.
 
-    The core part of the module is written in C and can be found here
-    <https://github.com/gh0stwizard/libeav>.
+    The core part of the module is written in C and can be found in the
+    libeav directory.
 
     The module conforms to:
 
@@ -54,6 +54,11 @@ DESCRIPTION
     *   FQDN - if the domain contains only alias and it is not a special or
         reserved domain, then the result is negative, that is, such an email
         address is considered as invalid.
+
+    *   TLD - the module checks that domain is a Top Level Domain (TLD). The
+        list of TLDs has been taken from IANA's Root Zone Database
+        <https://www.iana.org/domains/root/db>. See the "TLD INFORMATION"
+        section below for details.
 
 DEPENDENCIES
     You have to install one of IDN libraries on your choice:
@@ -106,7 +111,7 @@ METHODS
     The allow_tld option accepts the next values:
 
     *   TLD_NOT_ASSIGNED - allow not assigned TLDs. On IANA website they are
-        listed as "Not assigned" in the "Sponsoring Organisation" field.
+        listed as "Not assigned" in the "TLD Manager" field.
 
     *   TLD_COUNTRY_CODE - allow county-code TLDs.
 
