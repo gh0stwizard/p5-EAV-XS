@@ -12,10 +12,10 @@ my @OPTIONS = ();
 my $MYLIBS;
 
 # directory where idnkit was installed
-my $idnkit_dir = $ENV{ 'IDNKIT_DIR' } ? $ENV{ 'IDNKIT_DIR' } : '/usr/local';
+my $idnkit_dir = $ENV{'IDNKIT_DIR'} ? $ENV{'IDNKIT_DIR'} : '/usr/local';
 
 
-if (prompt ("Use default options (y/n)?", "y") =~ /^y/i) {
+if (prompt("Use default options (y/n)?", "y") =~ /^y/i) {
     &build_with_auto();
 }
 else {
@@ -38,7 +38,7 @@ else {
         &build_with_idnkit();
     }
     else {
-    print <<'EOF';
+        print <<'EOF';
 
  *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
 
@@ -118,11 +118,13 @@ to be used in international interchange without determining that
 there is agreement between sender and recipient, such as
 #, ~, ^, |, {, } and `.
 
-By default the module follow this rule.
+Disabled by default.
+
+Note: enabling this option will break tests.
 
 EOF
 
-    if (prompt ("Allow extra characters (y/n)?", "n") =~ /^[yY]/) {
+    if (prompt ("Use RFC 20 rules (y/n)?", "n") =~ /^[yY]/) {
         push @OPTIONS, "RFC6531_FOLLOW_RFC20=ON";
     }
 
@@ -137,7 +139,9 @@ RFC they must be specified as quote pair, e.g. "SPACE | TAB".
 Also RFC 5322 allows some control characters in double quotes and
 quoted pairs, such as Form Feed (\f), Line Feed (\n) and others.
 
-By default the module does not allow any control characters.
+Disabled by default.
+
+Note: enabling this option will break tests.
 
 EOF
 
@@ -152,10 +156,11 @@ sub test_idnkit() {
     return (-e "${idnkit_dir}/include/idn/api.h");
 }
 
-# set idnkit installation directory and returns whether or not it is correct
+# set idnkit installation directory and returns whether
+# or not it is correct.
 sub set_idnkit_dir {
-    $idnkit_dir = prompt    "Directory where idnkit installed:",
-                            "$idnkit_dir";
+    $idnkit_dir = prompt "Directory where idnkit installed:",
+                         "$idnkit_dir";
     return &test_idnkit();
 }
 
@@ -180,7 +185,7 @@ ERROR: Invalid idnkit directory.
 
 EOF
 
-            if (prompt ("Try again (y/n)?", "n") =~ /^[nN]/) {
+            if (prompt("Try again (y/n)?", "n") =~ /^[nN]/) {
                 print <<'EOF';
 
  *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
@@ -228,7 +233,7 @@ sub build_with_idnX($) {
     my ($idnname) = @_;
     my $idnpkg = "lib" . $idnname;
 
-    if (not ExtUtils::PkgConfig->exists ($idnpkg)) {
+    if (!ExtUtils::PkgConfig->exists($idnpkg)) {
         print <<"EOF";
 
  *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
@@ -240,7 +245,7 @@ EOF
         exit 2;
     }
 
-    my %pkg_info = ExtUtils::PkgConfig->find ($idnpkg);
+    my %pkg_info = ExtUtils::PkgConfig->find($idnpkg);
     $MYLIBS = $pkg_info{'libs'};
     push @OPTIONS, "FORCE_IDN=${idnname}";
 }

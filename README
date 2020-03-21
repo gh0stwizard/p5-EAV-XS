@@ -51,8 +51,16 @@ DESCRIPTION
         address is considered as invalid.
 
 DEPENDENCIES
-    This module depends on libidnkit <https://jprs.co.jp/idn/index-e.html>.
-    You have to install it before using this module.
+    You have to install one of IDN libraries on your choice:
+
+    *   libidn2 <https://github.com/libidn/libidn2>
+
+    *   libidn <https://www.gnu.org/software/libidn/>
+
+    *   libidnkit <https://jprs.co.jp/idn/index-e.html>
+
+    When run Makefile.PL, you will be asked to configure EAV::XS and at this
+    stage you may select the IDN library to build with.
 
 METHODS
     *   $eav = new ( [%options] )
