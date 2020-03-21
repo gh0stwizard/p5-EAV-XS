@@ -1,5 +1,6 @@
 use strict;
 use ExtUtils::MakeMaker;
+use ExtUtils::PkgConfig;
 
 # The libeav options:
 # * RFC6531_FOLLOW_RFC20 = ON | OFF     - allow extra chars (RFC 20)
@@ -8,41 +9,43 @@ use ExtUtils::MakeMaker;
 # * DESTDIR = /path/to/install/libeav
 # * INDKIT_DIR = /path/with/idnkit
 my @OPTIONS = ();
-my $MYLIBS = "";
+my $MYLIBS;
 
 # directory where idnkit was installed
 my $idnkit_dir = $ENV{ 'IDNKIT_DIR' } ? $ENV{ 'IDNKIT_DIR' } : '/usr/local';
 
 
-if (prompt ("Use default options (y/n)?", "y") =~ /^n/i) {
-	my $with_idn = prompt "Select IDN library to build with (auto/idn/idn2/idnkit)",
-		                  "auto";
+if (prompt ("Use default options (y/n)?", "y") =~ /^y/i) {
+    &build_with_auto();
+}
+else {
+    my $with_idn = prompt
+        "Select IDN library to build with (auto/idn/idn2/idnkit):",
+        "auto";
 
-	&set_rfc_options();
+    &set_rfc_options();
 
-	if ($with_idn =~ /auto/i) {
-		push @OPTIONS, "FORCE_IDN=";
-	}
-	elsif ($with_idn =~ /^idn1?$/i) {
-		push @OPTIONS, "FORCE_IDN=idn";
-	}
-	elsif ($with_idn =~ /^idn2$/i) {
-		push @OPTIONS, "FORCE_IDN=idn2";
-	}
-	elsif ($with_idn =~ /^idnkit$/i) {
-		push @OPTIONS, "FORCE_IDN=idnkit";
-		&build_with_idnkit();
-		$MYLIBS = "-L${idnkit_dir}/lib -lidnkit";
-	}
-	else {
-		print <<'EOF';
+    if ($with_idn =~ /^auto$/i) {
+        &build_with_auto();
+    }
+    elsif ($with_idn =~ /^idn1?$/i) {
+        &build_with_idnX('idn');
+    }
+    elsif ($with_idn =~ /^idn2$/i) {
+        &build_with_idnX('idn2');
+    }
+    elsif ($with_idn =~ /^idnkit$/i) {
+        &build_with_idnkit();
+    }
+    else {
+    print <<'EOF';
 
  *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
 
 ERROR: Invalid IDN library.
 
 EOF
-	}
+    }
 }
 
 
@@ -93,8 +96,7 @@ sub MY::subdir_x {
 sub MY::postamble {
     return <<'EOL';
 $(MYEXTLIB): libeav/Makefile
-	$(MAKE) -C libeav static pc-dump $(LIBEAV_OPTIONS)
-	$(eval LDLOADLIBS=$(shell cat libeav/.deps))
+	$(MAKE) -C libeav static $(LIBEAV_OPTIONS)
 
 clean-libeav:
 	$(MAKE) -C libeav clean
@@ -191,5 +193,54 @@ EOF
             }
         }
     }
+
+    push @OPTIONS, "FORCE_IDN=idnkit";
+    push @OPTIONS, "IDNKIT_DIR=${idnkit_dir}";
 }
 
+
+sub build_with_auto() {
+    foreach my $idnname ('idn2', 'idn') {
+        my $idnpkg = "lib" . $idnname;
+        next if !ExtUtils::PkgConfig->exists ($idnpkg);
+        my %pkg_info = ExtUtils::PkgConfig->find ($idnpkg);
+        $MYLIBS = $pkg_info{'libs'};
+        push @OPTIONS, "FORCE_IDN=${idnname}";
+        last;
+    }
+
+    if (!$MYLIBS) {
+        print <<'EOF';
+
+ *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+WARNING: Could not found libidn2 and libidn libraries on this system.
+         Looking for idnkit...
+
+EOF
+
+        &build_with_idnkit();
+    }
+}
+
+
+sub build_with_idnX($) {
+    my ($idnname) = @_;
+    my $idnpkg = "lib" . $idnname;
+
+    if (not ExtUtils::PkgConfig->exists ($idnpkg)) {
+        print <<"EOF";
+
+ *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+ERROR: Could not found ${idnpkg} on this system.
+
+EOF
+
+        exit 2;
+    }
+
+    my %pkg_info = ExtUtils::PkgConfig->find ($idnpkg);
+    $MYLIBS = $pkg_info{'libs'};
+    push @OPTIONS, "FORCE_IDN=${idnname}";
+}

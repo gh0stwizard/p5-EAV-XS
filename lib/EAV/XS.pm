@@ -108,7 +108,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = ();
 
-our $VERSION = eval '0.2.2';
+our $VERSION = eval '0.3.0';
 
 require XSLoader;
 XSLoader::load('EAV::XS', $VERSION);
@@ -135,8 +135,26 @@ __END__
 
 =head1 DEPENDENCIES
 
-This module depends on L<libidnkit|https://jprs.co.jp/idn/index-e.html>.
-You have to install it before using this module.
+You have to install one of IDN libraries on your choice:
+
+=over 4
+
+=item *
+
+L<libidn2|https://github.com/libidn/libidn2>
+
+=item *
+
+L<libidn|https://www.gnu.org/software/libidn/>
+
+=item *
+
+L<libidnkit|https://jprs.co.jp/idn/index-e.html>
+
+=back
+
+When run Makefile.PL, you will be asked to configure EAV::XS and
+at this stage you may select the IDN library to build with.
 
 =head1 METHODS
 
