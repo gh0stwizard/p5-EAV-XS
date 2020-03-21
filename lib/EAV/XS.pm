@@ -49,16 +49,22 @@ characters without quoted-pairs.
 
 =item *
 
-L<RFC 6531|https://tools.ietf.org/html/rfc6531> and
-L<RFC 20|https://tools.ietf.org/html/rfc20>.
-Allows Internationalized Email Addresses encoded 
-in UTF-8, L<RFC 3629|https://tools.ietf.org/html/rfc3629>.
-
-Currently, this mode based on RFC 5321 and disallow next characters,
-as described in RFC 20: C<`>, C<#>, C<^>, C<{>, C<}>, C<~> and C<|>.
-They must be in double-quotes.
+L<RFC 6531|https://tools.ietf.org/html/rfc6531>
+- allows Internationalized Email Addresses encoded in UTF-8.
+See also L<RFC 3629|https://tools.ietf.org/html/rfc3629>).
+The B<RFC 6531> is based on the rules of the B<RFC 5321>.
 
 =back
+
+You may change the behavior of the B<RFC 6531> mode when
+building the module and enable support of the
+L<RFC 20|https://tools.ietf.org/html/rfc20> and
+L<RFC 5322|https://tools.ietf.org/html/rfc5322>.
+By default, neither B<RFC 5322> nor B<RFC 20> is enabled.
+
+The B<RFC 20> disallows the next characters within local-part:
+C<`>, C<#>, C<^>, C<{>, C<}>, C<~> and C<|>.
+They must be in double-quotes.
 
 The default behavior of the module also includes
 the check of:
@@ -255,7 +261,6 @@ TLD_SPECIAL - allow Special & Restricted TLDs.
 See L<RFC 2606|https://tools.ietf.org/html/rfc2606>,
 L<RFC 6761|https://tools.ietf.org/html/rfc6761> and
 L<RFC 7686|https://tools.ietf.org/html/rfc7686> for details.
-
 Currently, this includes the next TLDs: "test.", "invalid.", 
 "localhost.", "example.", "onion." and also Second Level Domains,
 such as, "example.com.", "example.net." and "example.org.".
