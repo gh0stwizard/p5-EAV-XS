@@ -266,7 +266,7 @@ such as, "example.com.", "example.net." and "example.org.".
 For instance, to allow only country-code and generic TLDs you
 have to write this:
 
-    my $eav = EAX::XS->new(
+    my $eav = EAV::XS->new(
         allow_tld => EAV::XS::TLD_COUNTRY_CODE | EAV::XS::TLD_GENERIC
     );
 
