@@ -4382,9 +4382,13 @@ typedef OP* (CPERLscope(*Perl_check_t)) (pTHX_ OP*);
 # endif
 
 #ifdef HAS_QUAD
+#ifndef WIDEST_UTYPE
 # define WIDEST_UTYPE U64TYPE
+#endif
 #else
+#ifndef WIDEST_UTYPE
 # define WIDEST_UTYPE U32
+#endif
 #endif
 #ifndef isALNUMC
 #  define isALNUMC(c)                    (isALPHA(c) || isDIGIT(c))
