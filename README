@@ -32,14 +32,19 @@ DESCRIPTION
         characters and not allows SPACE and TAB characters without
         quoted-pairs.
 
-    *   RFC 6531 <https://tools.ietf.org/html/rfc6531> and RFC 20
-        <https://tools.ietf.org/html/rfc20>. Allows Internationalized Email
-        Addresses encoded in UTF-8, RFC 3629
-        <https://tools.ietf.org/html/rfc3629>.
+    *   RFC 6531 <https://tools.ietf.org/html/rfc6531> - allows
+        Internationalized Email Addresses encoded in UTF-8. See also RFC
+        3629 <https://tools.ietf.org/html/rfc3629>). The RFC 6531 is based
+        on the rules of the RFC 5321.
 
-        Currently, this mode based on RFC 5321 and disallow next characters,
-        as described in RFC 20: "`", "#", "^", "{", "}", "~" and "|". They
-        must be in double-quotes.
+    You may change the behavior of the RFC 6531 mode when building the
+    module and enable support of the RFC 20
+    <https://tools.ietf.org/html/rfc20> and RFC 5322
+    <https://tools.ietf.org/html/rfc5322>. By default, neither RFC 5322 nor
+    RFC 20 is enabled.
+
+    The RFC 20 disallows the next characters within local-part: "`", "#",
+    "^", "{", "}", "~" and "|". They must be in double-quotes.
 
     The default behavior of the module also includes the check of:
 
@@ -118,11 +123,10 @@ METHODS
     *   TLD_SPECIAL - allow Special & Restricted TLDs. See RFC 2606
         <https://tools.ietf.org/html/rfc2606>, RFC 6761
         <https://tools.ietf.org/html/rfc6761> and RFC 7686
-        <https://tools.ietf.org/html/rfc7686> for details.
-
-        Currently, this includes the next TLDs: "test.", "invalid.",
-        "localhost.", "example.", "onion." and also Second Level Domains,
-        such as, "example.com.", "example.net." and "example.org.".
+        <https://tools.ietf.org/html/rfc7686> for details. Currently, this
+        includes the next TLDs: "test.", "invalid.", "localhost.",
+        "example.", "onion." and also Second Level Domains, such as,
+        "example.com.", "example.net." and "example.org.".
 
     For instance, to allow only country-code and generic TLDs you have to
     write this:
