@@ -1,6 +1,5 @@
 use strict;
-use ExtUtils::MakeMaker;
-use ExtUtils::PkgConfig;
+use ExtUtils::MakeMaker 5.62;
 
 # The libeav options:
 # * RFC6531_FOLLOW_RFC20 = ON | OFF     - allow extra chars (RFC 20)
@@ -8,34 +7,31 @@ use ExtUtils::PkgConfig;
 # * FORCE_IDN = idn | idn2 | idnkit     - force build with specific idn library
 # * DESTDIR = /path/to/install/libeav
 # * INDKIT_DIR = /path/with/idnkit
-my @OPTIONS = ();
-my $MYLIBS;
-
-# directory where idnkit was installed
-my $idnkit_dir = $ENV{'IDNKIT_DIR'} ? $ENV{'IDNKIT_DIR'} : '/usr/local';
 
 
-if (prompt("Use default options (y/n)?", "y") =~ /^y/i) {
-    &build_with_auto();
-}
-else {
+sub myconfigure() {
+    if (prompt("Use default options (y/n)?", "y") =~ /^y/i) {
+        my $cfg = &build_auto();
+        print Dumper $cfg;
+        return $cfg;
+    }
+
+    my $cfg;
     my $with_idn = prompt
         "Select IDN library to build with (auto/idn/idn2/idnkit):",
         "auto";
 
-    &set_rfc_options();
-
     if ($with_idn =~ /^auto$/i) {
-        &build_with_auto();
+        $cfg = &build_auto();
     }
     elsif ($with_idn =~ /^idn1?$/i) {
-        &build_with_idnX('idn');
+        $cfg = &build_with_idnX('idn');
     }
     elsif ($with_idn =~ /^idn2$/i) {
-        &build_with_idnX('idn2');
+        $cfg = &build_with_idnX('idn2');
     }
     elsif ($with_idn =~ /^idnkit$/i) {
-        &build_with_idnkit();
+        $cfg = &build_with_idnkit();
     }
     else {
         print <<'EOF';
@@ -44,8 +40,14 @@ else {
 
 ERROR: Invalid IDN library.
 
+Bye!
 EOF
+        exit 3;
     }
+
+    my $rfc_opts = join(" ", &set_rfc_options());
+    $cfg->{'macro'}->{'LIBEAV_OPTIONS'} .= " ${rfc_opts}";
+    return $cfg;
 }
 
 
@@ -65,24 +67,23 @@ WriteMakefile(
     TEST_REQUIRES     => {
         'Test::More' => 0,
     },
+    CONFIGURE_REQUIRES => {
+        'ExtUtils::MakeMaker' => 5.62,
+        'ExtUtils::PkgConfig' => 1.16,
+    },
     ABSTRACT          => 'Email Address Validation Library',
     AUTHOR            => 'Vitaliy V. Tokarev <vitaliy.tokarev@gmail.com>',
     LICENSE           => 'freebsd',
-    LIBS              => [ $MYLIBS ],
-    DEFINE            => "",
     INC               => '-Ilibeav/include',
     OBJECT            => '$(O_FILES)',
     MYEXTLIB          => 'libeav/libeav.a',
-    macro             =>  {
-        # workaround to the current build system
-        'LIBEAV_OPTIONS' => join(" ", @OPTIONS),
-    },
     depend => {
         # also clean libeav files
         'clean_subdirs'     => 'clean-libeav',
         # libeav internal checks
         'check'             => 'check-libeav',
     },
+    CONFIGURE => \&myconfigure,
 );
 
 
@@ -109,6 +110,8 @@ EOL
 
 
 sub set_rfc_options() {
+    my @options;
+
     print <<'EOF';
 
  *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
@@ -120,12 +123,12 @@ there is agreement between sender and recipient, such as
 
 Disabled by default.
 
-Note: enabling this option will break tests.
+WARNING: enabling this option will break tests.
 
 EOF
 
     if (prompt ("Use RFC 20 rules (y/n)?", "n") =~ /^[yY]/) {
-        push @OPTIONS, "RFC6531_FOLLOW_RFC20=ON";
+        push @options, "RFC6531_FOLLOW_RFC20=ON";
     }
 
     print <<'EOF';
@@ -141,33 +144,42 @@ quoted pairs, such as Form Feed (\f), Line Feed (\n) and others.
 
 Disabled by default.
 
-Note: enabling this option will break tests.
+WARNING: enabling this option will break tests.
 
 EOF
 
     if (prompt("Use RFC 5322 syntax (y/n)?", "n") =~ /^[yY]/) {
-        push @OPTIONS, "RFC6531_FOLLOW_RFC5322=ON";
+        push @options, "RFC6531_FOLLOW_RFC5322=ON";
     }
+
+    return @options;
 }
 
 
 # test if idnkit is installed properly; no critic
-sub test_idnkit() {
-    return (-e "${idnkit_dir}/include/idn/api.h");
+sub test_idnkit($) {
+    my ($dir) = @_;
+
+    return (-e "${dir}/include/idn/api.h");
 }
 
 # set idnkit installation directory and returns whether
 # or not it is correct.
-sub set_idnkit_dir {
-    $idnkit_dir = prompt "Directory where idnkit installed:",
-                         "$idnkit_dir";
+sub set_idnkit_dir($) {
+    my ($dir_ref) = @_;
+    $dir_ref =
     return &test_idnkit();
 }
 
 # define options when build with idnkit
 sub build_with_idnkit() {
-    if (! &test_idnkit()) {
-        print <<'EOF';
+    # directory where idnkit was installed
+    my $idnkit_dir = $ENV{'IDNKIT_DIR'} || '/usr/local';
+    my @options;
+
+    if (! &test_idnkit($idnkit_dir)) {
+        do {
+            print <<'EOF';
 
  *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
 
@@ -175,17 +187,11 @@ Could not find idnkit header files. Please, set proper directory,
 for instance, /opt/local.
 
 EOF
+            my $retry = prompt
+                "Would you try to set idnkit install directory (y/n)?",
+                "y";
 
-        while (! &set_idnkit_dir()) {
-            print <<'EOF';
-
- *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
-
-ERROR: Invalid idnkit directory.
-
-EOF
-
-            if (prompt("Try again (y/n)?", "n") =~ /^[nN]/) {
+            if ($retry =~ /^[nN]/) {
                 print <<'EOF';
 
  *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
@@ -196,26 +202,45 @@ Bye!
 EOF
                 exit 1;
             }
-        }
+
+            $idnkit_dir = prompt
+                "Directory where idnkit installed:",
+                "$idnkit_dir";
+        } while (! &test_idnkit($idnkit_dir));
     }
 
-    push @OPTIONS, "FORCE_IDN=idnkit";
-    push @OPTIONS, "IDNKIT_DIR=${idnkit_dir}";
+    push @options, "FORCE_IDN=idnkit";
+    push @options, "IDNKIT_DIR=${idnkit_dir}";
+    my $libs = "-L${idnkit_dir}/lib -lidnkit";
+
+    return {
+        LIBS => $libs,
+        macro => {
+            LIBEAV_OPTIONS => join(" ", @options),
+        },
+    };
 }
 
 
-sub build_with_auto() {
-    foreach my $idnname ('idn2', 'idn') {
-        my $idnpkg = "lib" . $idnname;
-        next if !ExtUtils::PkgConfig->exists ($idnpkg);
-        my %pkg_info = ExtUtils::PkgConfig->find ($idnpkg);
-        $MYLIBS = $pkg_info{'libs'};
-        push @OPTIONS, "FORCE_IDN=${idnname}";
-        last;
-    }
+sub build_auto() {
+    my $libs = "";
+    my @options;
+    my $result;
 
-    if (!$MYLIBS) {
-        print <<'EOF';
+    eval {
+        require ExtUtils::PkgConfig;
+
+        foreach my $idnname ('idn2', 'idn') {
+            my $idnpkg = "lib" . $idnname;
+            next if not ExtUtils::PkgConfig->exists ($idnpkg);
+            my %pkg_info = ExtUtils::PkgConfig->find ($idnpkg);
+            $libs = $pkg_info{'libs'};
+            push @options, "FORCE_IDN=${idnname}";
+            last;
+        }
+
+        if (! $libs) {
+            print <<'EOF';
 
  *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
 
@@ -223,29 +248,55 @@ WARNING: Could not found libidn2 and libidn libraries on this system.
          Looking for idnkit...
 
 EOF
+            $result = return &build_with_idnkit();
+        }
+    };
 
-        &build_with_idnkit();
+    if ($@) {
+        print STDERR $@;
+        exit 1;
     }
+
+    if ($result) {
+        return $result;
+    }
+
+    return {
+        LIBS => $libs,
+        macro => {
+            LIBEAV_OPTIONS => join(" ", @options)
+        },
+    };
 }
 
 
 sub build_with_idnX($) {
     my ($idnname) = @_;
     my $idnpkg = "lib" . $idnname;
+    my @options;
+    my $libs;
 
-    if (!ExtUtils::PkgConfig->exists($idnpkg)) {
-        print <<"EOF";
+    eval {
+        require ExtUtils::PkgConfig;
 
- *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+        if (!ExtUtils::PkgConfig->exists($idnpkg)) {
+            die "Could not found ${idnpkg} on this system.";
+        }
 
-ERROR: Could not found ${idnpkg} on this system.
+        my %pkg_info = ExtUtils::PkgConfig->find($idnpkg);
+        $libs = $pkg_info{'libs'};
+        push @options, "FORCE_IDN=${idnname}";
+    };
 
-EOF
-
+    if ($@) {
+        print STDERR $@;
         exit 2;
     }
 
-    my %pkg_info = ExtUtils::PkgConfig->find($idnpkg);
-    $MYLIBS = $pkg_info{'libs'};
-    push @OPTIONS, "FORCE_IDN=${idnname}";
+    return {
+        LIBS => $libs,
+        macro => {
+            LIBEAV_OPTIONS => join(" ", @options)
+        },
+    };
 }
