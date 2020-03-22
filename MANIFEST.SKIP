@@ -32,8 +32,6 @@
 ^EAV-XS-
 
 # local
-\.o
-\.bs
-XS\.c
-
-libeav/\.deps
+\.o$
+\.bs$
+^XS\.c$
