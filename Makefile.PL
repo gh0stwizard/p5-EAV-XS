@@ -2,7 +2,7 @@ use strict;
 use ExtUtils::MakeMaker 5.62;
 
 # The libeav options:
-# * RFC6531_FOLLOW_RFC20 = ON | OFF     - allow extra chars (RFC 20)
+# * RFC6531_FOLLOW_RFC20 = ON | OFF     - disallow some chars by RFC 20
 # * RFC6531_FOLLOW_RFC5322 = ON | OFF   - white-space chars depricated in quotes
 # * FORCE_IDN = idn | idn2 | idnkit     - force build with specific idn library
 # * DESTDIR = /path/to/install/libeav
@@ -12,7 +12,11 @@ use ExtUtils::MakeMaker 5.62;
 sub myconfigure() {
     if (prompt("Use default options (y/n)?", "y") =~ /^y/i) {
         my $cfg = &build_auto();
-        print Dumper $cfg;
+
+        if ($^O == "freebsd") {
+            $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
+        }
+
         return $cfg;
     }
 
@@ -47,6 +51,11 @@ EOF
 
     my $rfc_opts = join(" ", &set_rfc_options());
     $cfg->{'macro'}->{'LIBEAV_OPTIONS'} .= " ${rfc_opts}";
+
+    if ($^O == "freebsd") {
+        $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
+    }
+
     return $cfg;
 }
 
@@ -97,13 +106,13 @@ sub MY::subdir_x {
 sub MY::postamble {
     return <<'EOL';
 $(MYEXTLIB): libeav/Makefile
-	$(MAKE) -C libeav static $(LIBEAV_OPTIONS)
+	$(MAKE) -C libeav static $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE)
 
 clean-libeav:
-	$(MAKE) -C libeav clean
+	$(MAKE) -C libeav clean $(LIBEAV_MAKEFILE)
 
 check-libeav:
-	$(MAKE) -C libeav check $(LIBEAV_OPTIONS)
+	$(MAKE) -C libeav check $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE)
 
 EOL
 }

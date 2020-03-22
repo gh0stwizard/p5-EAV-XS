@@ -2,6 +2,7 @@ Revision history for Perl extension EAV::XS.
 
 0.3.2  Sun Mar 22 10:45:33 UTC 2020
 	- bug fix RT #132191, thanks to Slaven Rezić (SREZIC)
+	- bug fix RT #132192, thanks to Slaven Rezić (SREZIC)
 
 0.3.1  Sat Mar 21 08:17:43 UTC 2020
 	- update module description
