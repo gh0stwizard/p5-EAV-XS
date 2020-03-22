@@ -13,7 +13,7 @@ sub myconfigure() {
     if (prompt("Use default options (y/n)?", "y") =~ /^y/i) {
         my $cfg = &build_auto();
 
-        if ($^O == "freebsd") {
+        if ($^O eq "freebsd") {
             $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
         }
 
