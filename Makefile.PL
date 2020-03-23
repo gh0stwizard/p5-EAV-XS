@@ -109,7 +109,7 @@ $(MYEXTLIB): libeav/Makefile
 	$(MAKE) -C libeav static $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE)
 
 clean-libeav:
-	$(MAKE) -C libeav clean $(LIBEAV_MAKEFILE)
+	$(MAKE) -C libeav clean $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE)
 
 check-libeav:
 	$(MAKE) -C libeav check $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE)
