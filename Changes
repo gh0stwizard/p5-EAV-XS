@@ -1,5 +1,10 @@
 Revision history for Perl extension EAV::XS.
 
+0.3.3  Mon Mar 23 09:27:27 UTC 2020
+	- bug fix RT #132187, thanks to Slaven Rezić (SREZIC)
+	- libidn workaround added in t/08-file.t
+	- update libeav upstream
+
 0.3.2  Sun Mar 22 10:45:33 UTC 2020
 	- bug fix RT #132191, thanks to Slaven Rezić (SREZIC)
 	- bug fix RT #132192, thanks to Slaven Rezić (SREZIC)
