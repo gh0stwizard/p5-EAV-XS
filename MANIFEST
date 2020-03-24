@@ -1,6 +1,7 @@
 Changes
 examples/count-domains-with-dns.pl
 examples/count-domains.pl
+examples/email-info.pl
 lib/EAV/XS.pm
 libeav/bin/main.c
 libeav/bin/main.h
