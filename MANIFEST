@@ -10,6 +10,7 @@ libeav/bin/utf8_decode.c
 libeav/bin/utf8_decode.h
 libeav/data/domain-length.txt
 libeav/data/email-reg.ru.txt
+libeav/data/email-result-check.txt
 libeav/data/email-utf8.txt
 libeav/data/fail-email-ascii.txt
 libeav/data/localpart-ascii.txt
@@ -84,6 +85,7 @@ libeav/tests/t-822-email.c
 libeav/tests/t-822-localpart.c
 libeav/tests/t-eav-all-modes.c
 libeav/tests/t-eav.c
+libeav/tests/t-result.c
 libeav/TODO
 libeav/util/gen_utf8_pass_test.pl
 libeav/util/gentld.pl

@@ -13,7 +13,7 @@ sub myconfigure() {
     if (prompt("Use default options (y/n)?", "y") =~ /^y/i) {
         my $cfg = &build_auto();
 
-        if ($^O eq "freebsd") {
+        if ($^O =~ /bsd/) {
             $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
         }
 
@@ -52,7 +52,7 @@ EOF
     my $rfc_opts = join(" ", &set_rfc_options());
     $cfg->{'macro'}->{'LIBEAV_OPTIONS'} .= " ${rfc_opts}";
 
-    if ($^O eq "freebsd") {
+    if ($^O =~ /bsd/) {
         $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
     }
 
