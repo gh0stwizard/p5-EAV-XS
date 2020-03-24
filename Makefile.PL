@@ -202,7 +202,7 @@ for instance, /opt/local.
 EOF
             my $retry = prompt
                 "Would you try to set idnkit install directory (y/n)?",
-                "y";
+                "n";
 
             if ($retry =~ /^[nN]/) {
                 print <<'EOF';
