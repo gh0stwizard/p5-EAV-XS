@@ -84,6 +84,7 @@ WriteMakefile(
     AUTHOR            => 'Vitaliy V. Tokarev <vitaliy.tokarev@gmail.com>',
     LICENSE           => 'freebsd',
     INC               => '-Ilibeav/include',
+    DEFINE            => '-DEAV_EXTRA',
     OBJECT            => '$(O_FILES)',
     MYEXTLIB          => 'libeav/libeav.a',
     depend => {
@@ -106,13 +107,16 @@ sub MY::subdir_x {
 sub MY::postamble {
     return <<'EOL';
 $(MYEXTLIB): libeav/Makefile
-	$(MAKE) -C libeav static $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE)
+	$(MAKE) -C libeav static $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE) \
+		INCLUDES=$(DEFINE)
 
 clean-libeav:
-	$(MAKE) -C libeav clean $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE)
+	$(MAKE) -C libeav clean $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE) \
+		INCLUDES=$(DEFINE)
 
 check-libeav:
-	$(MAKE) -C libeav check $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE)
+	$(MAKE) -C libeav check $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE) \
+		INCLUDES=$(DEFINE)
 
 EOL
 }

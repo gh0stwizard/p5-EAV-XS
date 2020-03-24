@@ -20,7 +20,6 @@ libeav/data/pass-email-ascii.txt
 libeav/data/punycode.csv
 libeav/data/raw.csv
 libeav/data/tld-domains.txt
-libeav/data/tld.csv
 libeav/data/xn-dash-domains.txt
 libeav/docs/libeav.3.gz
 libeav/docs/libeav.3.pod
@@ -110,6 +109,9 @@ t/11-rfc5322.t
 t/13-not-tld.t
 t/14-error.t
 t/15-tld.t
+t/16-get-lpart.t
+t/17-get-domain.t
+t/18-get-domain-type.t
 t/check-fail.txt
 t/check-pass.txt
 typemap
