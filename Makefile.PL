@@ -17,7 +17,7 @@ sub myconfigure() {
             $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
         }
 
-        if ($^O == "solaris") {
+        if ($^O eq "solaris") {
             $cfg->{'DEFINE'} = "-DEAV_EXTRA -m64";
         }
 
@@ -60,7 +60,7 @@ EOF
         $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
     }
 
-    if ($^O == "solaris") {
+    if ($^O eq "solaris") {
         $cfg->{'DEFINE'} = "-DEAV_EXTRA -m64";
     }
 
