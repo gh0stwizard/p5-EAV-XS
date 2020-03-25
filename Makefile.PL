@@ -17,6 +17,10 @@ sub myconfigure() {
             $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
         }
 
+        if ($^O == "solaris") {
+            $cfg->{'DEFINE'} = "-DEAV_EXTRA -m64";
+        }
+
         return $cfg;
     }
 
@@ -54,6 +58,10 @@ EOF
 
     if ($^O =~ /bsd/) {
         $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
+    }
+
+    if ($^O == "solaris") {
+        $cfg->{'DEFINE'} = "-DEAV_EXTRA -m64";
     }
 
     return $cfg;
@@ -108,15 +116,15 @@ sub MY::postamble {
     return <<'EOL';
 $(MYEXTLIB): libeav/Makefile
 	$(MAKE) -C libeav static $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE) \
-		INCLUDES=$(DEFINE)
+		INCLUDES="$(DEFINE)"
 
 clean-libeav:
 	$(MAKE) -C libeav clean $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE) \
-		INCLUDES=$(DEFINE)
+		INCLUDES="$(DEFINE)"
 
 check-libeav:
 	$(MAKE) -C libeav check $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE) \
-		INCLUDES=$(DEFINE)
+		INCLUDES="$(DEFINE)"
 
 EOL
 }
