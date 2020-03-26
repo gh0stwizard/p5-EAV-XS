@@ -19,6 +19,7 @@ sub myconfigure() {
 
         if ($^O eq "solaris") {
             $cfg->{'DEFINE'} = "-DEAV_EXTRA -m64";
+            $cfg->{'dynamic_lib'}->{'OTHERLDFLAGS'} = "-m64";
         }
 
         return $cfg;
@@ -62,6 +63,7 @@ EOF
 
     if ($^O eq "solaris") {
         $cfg->{'DEFINE'} = "-DEAV_EXTRA -m64";
+        $cfg->{'dynamic_lib'}->{'OTHERLDFLAGS'} = "-m64";
     }
 
     return $cfg;
@@ -124,7 +126,7 @@ clean-libeav:
 
 check-libeav:
 	$(MAKE) -C libeav check $(LIBEAV_OPTIONS) $(LIBEAV_MAKEFILE) \
-		INCLUDES="$(DEFINE)"
+		INCLUDES="$(DEFINE)" LDFLAGS="$(OTHERLDFLAGS)"
 
 EOL
 }
