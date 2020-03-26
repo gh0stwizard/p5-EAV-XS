@@ -13,11 +13,13 @@ sub myconfigure() {
     if (prompt("Use default options (y/n)?", "y") =~ /^y/i) {
         my $cfg = &build_auto();
 
-        if ($^O =~ /bsd/) {
+        if ($^O =~ /^(free|net)bsd$/i) {
             $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
         }
-
-        if ($^O eq "solaris") {
+        elsif ($^O eq "openbsd") {
+            $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.openbsd";
+        }
+        elsif ($^O eq "solaris") {
             $cfg->{'DEFINE'} = "-DEAV_EXTRA -m64";
             $cfg->{'dynamic_lib'}->{'OTHERLDFLAGS'} = "-m64";
         }
@@ -57,11 +59,13 @@ EOF
     my $rfc_opts = join(" ", &set_rfc_options());
     $cfg->{'macro'}->{'LIBEAV_OPTIONS'} .= " ${rfc_opts}";
 
-    if ($^O =~ /bsd/) {
+    if ($^O =~ /^(free|net)bsd$/i) {
         $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
     }
-
-    if ($^O eq "solaris") {
+    elsif ($^O eq "openbsd") {
+        $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.openbsd";
+    }
+    elsif ($^O eq "solaris") {
         $cfg->{'DEFINE'} = "-DEAV_EXTRA -m64";
         $cfg->{'dynamic_lib'}->{'OTHERLDFLAGS'} = "-m64";
     }
