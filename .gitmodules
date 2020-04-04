@@ -1,3 +1,4 @@
 [submodule "libeav"]
 	path = libeav
 	url = https://github.com/gh0stwizard/libeav.git
+	branch = master
