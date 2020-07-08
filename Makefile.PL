@@ -14,7 +14,7 @@ sub myconfigure() {
     if (prompt("Use default options (y/n)?", "y") =~ /^y/i) {
         my $cfg = &build_auto();
 
-        if ($^O =~ /^(free|net)bsd$/i) {
+        if ($^O =~ /^(free|net)bsd$/i || $^O eq "dragonfly") {
             $cfg->{'macro'}->{'LIBEAV_MAKEFILE'} = "-f Makefile.bsd";
         }
         elsif ($^O eq "openbsd") {
