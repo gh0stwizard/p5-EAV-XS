@@ -159,6 +159,9 @@ METHODS
 
     *   TLD_SPONSORED - allow sponsored TLDs.
 
+    *   TLD_RETIRED - allow retired TLDs. On IANA website they are listed as
+        "Retired" in the "TLD Manager" field.
+
     *   TLD_TEST - allow test TLDs.
 
     *   TLD_SPECIAL - allow Special & Restricted TLDs. See RFC 2606
