@@ -51,7 +51,7 @@ characters without quoted-pairs.
 
 L<RFC 6531|https://tools.ietf.org/html/rfc6531>
 - allows Internationalized Email Addresses encoded in UTF-8.
-See also L<RFC 3629|https://tools.ietf.org/html/rfc3629>).
+See also L<RFC 3629|https://tools.ietf.org/html/rfc3629>.
 The B<RFC 6531> is based on the rules of the B<RFC 5321>.
 
 =back
