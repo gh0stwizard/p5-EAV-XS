@@ -1,5 +1,9 @@
 Revision history for Perl extension EAV::XS.
 
+0.5.2  Sun Nov 22 02:35:52 UTC 2020
+	- update IANA database
+	- added repository information to Makefile.PL (thanks to Gabor Szabo)
+
 0.5.1  Sat Oct 17 05:21:03 UTC 2020
 	- update IANA database
 
