@@ -25,14 +25,26 @@ my @email_fail = (
     'abc.."xyz"@fail.com',
 );
 
-for my $email (@email_pass) {
-    ok ($eav->is_email($email), "pass: '" . $email . "'");
-    $testnum++;
-}
+my %rfc = (
+    '822' => EAV::XS::RFC822,
+    '5321' => EAV::XS::RFC5321,
+    '5322' => EAV::XS::RFC5322,
+    '6531' => EAV::XS::RFC6531,
+);
 
-for my $email (@email_fail) {
-    ok (! $eav->is_email($email), "fail: '" . $email . "'");
-    $testnum++;
+for my $rfcnum (keys %rfc) {
+    $eav->setup ('rfc' => $rfc{$rfcnum});
+
+    for my $email (@email_pass) {
+#        diag("[rfc$rfcnum]$email: " . $eav->get_error()) if !$eav->is_email($email);
+        ok ($eav->is_email($email), "pass [rfc$rfcnum]: '$email'");
+        $testnum++;
+    }
+
+    for my $email (@email_fail) {
+        ok (! $eav->is_email($email), "fail [rfc$rfcnum]: '$email'");
+        $testnum++;
+    }
 }
 
 done_testing ($testnum);
