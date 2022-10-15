@@ -5,8 +5,35 @@ use Test::More;
 # This is a workaround in case if the locale is not utf-8 compatable.
 use POSIX qw(locale_h);
 use locale;
-setlocale(LC_ALL, "en_US.UTF-8") or die "setlocale";
-
+# FIXME:
+# I had tested this on my gear: Windows 10, build 19044.2130 + Strawberry Perl 5.32.1.1 x64.
+# And I assume that POSIX::setlocale on Win32 is broken, because here's my results:
+# * setlocale(LC_ALL, "English")   PASS
+# * setlocale(LC_ALL, "en-US")     FAIL
+# * setlocale(LC_ALL, ".1251")     PASS
+# * setlocale(LC_ALL, "English_United States.1252")    PASS
+# * setlocale(LC_ALL, ".65001")    FAIL
+# * setlocale(LC_ALL, ".utf8")     FAIL
+# * setlocale(LC_ALL, ".utf-8")    FAIL
+# * setlocale(LC_ALL, ".UTF-8")    FAIL
+# * setlocale(LC_ALL, ".UTF8")     FAIL
+#
+# According to docs (see the link below), all tests I've mentioned above MUST pass ...
+#
+# Reference:
+#   https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/setlocale-wsetlocale?view=msvc-170
+#
+# My conclusions at the moment:
+#   I just skip return value check on Win32.
+#   If anyone knows how to fix it properly, then let me know. Thanks!
+setlocale(LC_ALL, "en_US.UTF-8") or do {
+    # why not "(expr) ? a() : b();"? -- because its 5.10+ only feature
+    if ($^O eq 'MSWin32') {
+        diag("MSWin32: setlocale failed, as expected, continue ...");
+    } else {
+        die "failed to set locale";
+    }
+};
 
 my $testnum = 0;
 
