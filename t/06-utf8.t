@@ -24,16 +24,18 @@ use locale;
 #   https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/setlocale-wsetlocale?view=msvc-170
 #
 # My conclusions at the moment:
-#   I just skip return value check on Win32.
-#   If anyone knows how to fix it properly, then let me know. Thanks!
-setlocale(LC_ALL, "en_US.UTF-8") or do {
-    # why not "(expr) ? a() : b();"? -- because its 5.10+ only feature
-    if ($^O eq 'MSWin32') {
-        diag("MSWin32: setlocale failed, as expected, continue ...");
-    } else {
-        die "failed to set locale";
-    }
-};
+# 1) I just skip return value check on Win32.
+#    If anyone knows how to fix it properly, then let me know. Thanks!
+#
+# 2) On *nix, setlocale() is accepting almost any arguments and returns
+#    success most of the time.
+#    What's the point to check the return value then? ^_^
+#
+setlocale(LC_ALL, "en_US.UTF-8") ;#or do {
+#    if ($^O ne 'MSWin32') {
+#        diag("failed to set locale, continue ...");
+#    }
+#};
 
 my $testnum = 0;
 
