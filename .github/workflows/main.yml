@@ -13,7 +13,7 @@ jobs:
         perl: [ '5.36' ]
 
     runs-on: ${{matrix.runner}}
-    name: OS ${{matrix.runner}} Perl ${{matrix.perl}}
+    name: OS ${{matrix.runner}} Perl ${{matrix.perl}} libidn2
 
     steps:
     - uses: actions/checkout@v2
@@ -27,7 +27,7 @@ jobs:
       if:  ${{ startsWith( matrix.runner, 'ubuntu-')}}
       run: |
         sudo apt-get update
-        sudo apt-get install -y libidn libidn2-dev
+        sudo apt-get install -y libidn2-dev
 
     - name: Set up perl
       uses: shogo82148/actions-setup-perl@v1
@@ -76,7 +76,7 @@ jobs:
         perl: [ '5.36' ]
 
     runs-on: ${{matrix.runner}}
-    name: OS ${{matrix.runner}} Perl ${{matrix.perl}}
+    name: OS ${{matrix.runner}} Perl ${{matrix.perl}} libidn
 
     steps:
     - uses: actions/checkout@v2
