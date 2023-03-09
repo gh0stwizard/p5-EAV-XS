@@ -35,3 +35,9 @@
 \.o$
 \.bs$
 ^XS\.c$
+\.a$
+\.so$
+\.dll$
+\.bin$
+\.exe$
+^pm_to_blib$
