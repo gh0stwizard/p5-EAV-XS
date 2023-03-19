@@ -178,6 +178,17 @@ METHODS
         domain name, after the is_email method call. If the email address is
         invalid, then get_is_domain returns false.
 
+    *   $tld_type = get_tld_type ()
+
+        Returns TLD type of the email after the is_email method call. If the
+        email address is invalid, then get_tld_type returns the
+        *EAV::XS::TLD_INVALID* value.
+
+        The TLD type is a value that you pass as the allow_tld option to new
+        method. For instance, you may compare the return value of the
+        get_tld_type method with the value
+        *EAV::XS::TLD_GENERIC_RESTRICTED*.
+
   TLD INFORMATION
     The current list of all TLDs can be found on IANA Root Zone Database
     <https://www.iana.org/domains/root/db> website.
@@ -187,7 +198,7 @@ METHODS
     *   TLD_NOT_ASSIGNED - allow not assigned TLDs. On IANA website they are
         listed as "Not assigned" in the "TLD Manager" field.
 
-    *   TLD_COUNTRY_CODE - allow county-code TLDs.
+    *   TLD_COUNTRY_CODE - allow country-code TLDs.
 
     *   TLD_GENERIC - allow generic TLDs.
 

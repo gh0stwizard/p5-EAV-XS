@@ -320,6 +320,19 @@ Returns whether or not the domain-part of the email contains an domain
 name, B<after> the B<is_email> method call.
 If the email address is invalid, then B<get_is_domain> returns false.
 
+=item *
+
+$tld_type = B<get_tld_type> ()
+
+Returns TLD type of the email B<after> the B<is_email> method call.
+If the email address is invalid, then B<get_tld_type> returns the
+I<EAV::XS::TLD_INVALID> value.
+
+The TLD type is a value that you pass as the B<allow_tld> option
+to B<new> method. For instance, you may compare the return value
+of the B<get_tld_type> method with the value
+I<EAV::XS::TLD_GENERIC_RESTRICTED>.
+
 =back
 
 =head2 TLD INFORMATION
@@ -338,7 +351,7 @@ as "Not assigned" in the "TLD Manager" field.
 
 =item *
 
-TLD_COUNTRY_CODE - allow county-code TLDs.
+TLD_COUNTRY_CODE - allow country-code TLDs.
 
 =item *
 
