@@ -249,7 +249,7 @@ get_tld_type(self)
         EAV::XS     self
     CODE:
         if (self->result == NULL || self->errcode != EEAV_NO_ERROR)
-            RETVAL = 0x00000002;
+            RETVAL = 0x00000002; /* TLD_INVALID from lib/EAV/XS.pm */
         else
             /* See details libeav/include/eav/auto_tld.h,
              * specifically enum-values called TLD_TYPE_*.
