@@ -1,5 +1,8 @@
 Revision history for Perl extension EAV::XS.
 
+0.7.7  Fri Apr  7 08:26:48 UTC 2023
+	- added TLD_ALL flag
+
 0.7.6  Sun Mar 19 14:53:23 UTC 2023
 	- update IANA database
 	- added get_tld_type() method
